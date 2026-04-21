@@ -25,55 +25,60 @@ def show_menu():
 def main():
     """
     Main function for running the program.
-
-    Planned flow:
-        1. Create MoodJournalAnalyzer object
-        2. Show menu
-        3. Ask user for a choice
-        4. Call the matching method
-        5. Repeat until user exits
     """
     analyzer = MoodJournalAnalyzer()
 
     while True:
         show_menu()
-        choice = input("Choose an option: ")
+        choice = input("Choose an option: ").strip()
 
-        if choice == "1":
-            # ask for date and entry text
-            # call analyzer.add_entry()
-            pass
+        try:
+            if choice == "1":
+                date = input("Enter the date (YYYY-MM-DD): ").strip()
+                text = input("Enter your journal entry: ").strip()
+                analyzer.add_entry(date, text)
+                print("Entry added successfully.")
 
-        elif choice == "2":
-            # ask for filename
-            # call analyzer.load_entries()
-            pass
+            elif choice == "2":
+                filename = input("Enter the filename to load: ").strip()
+                analyzer.load_entries(filename)
+                print("Entries loaded successfully.")
 
-        elif choice == "3":
-            # ask for filename
-            # call analyzer.save_entries()
-            pass
+            elif choice == "3":
+                filename = input("Enter the filename to save to: ").strip()
+                analyzer.save_entries(filename)
+                print("Entries saved successfully.")
 
-        elif choice == "4":
-            # call analyzer.display_entries()
-            pass
+            elif choice == "4":
+                analyzer.display_entries()
 
-        elif choice == "5":
-            # call analyzer.analyze_mood()
-            # print results
-            pass
+            elif choice == "5":
+                results = analyzer.analyze_mood()
+                print("\nMood Analysis Report")
+                print("-" * 20)
+                print(f"Number of entries: {results['entry_count']}")
+                print(f"Positive words: {results['positive_count']}")
+                print(f"Negative words: {results['negative_count']}")
+                print(f"Overall mood: {results['overall_mood']}")
 
-        elif choice == "6":
-            # call analyzer.word_frequency_report()
-            # print most common words
-            pass
+            elif choice == "6":
+                report = analyzer.word_frequency_report()
+                print("\nMost Common Words")
+                print("-" * 18)
+                for word, count in report:
+                    print(f"{word}: {count}")
 
-        elif choice == "7":
-            print("Exiting program.")
-            break
+            elif choice == "7":
+                print("Exiting program.")
+                break
 
-        else:
-            print("Invalid choice. Please try again.")
+            else:
+                print("Invalid choice. Please try again.")
+
+        except FileNotFoundError:
+            print("That file could not be found.")
+        except ValueError as error:
+            print(f"Error: {error}")
 
 
 if __name__ == "__main__":
